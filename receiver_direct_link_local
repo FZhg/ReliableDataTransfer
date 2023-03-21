@@ -24,7 +24,7 @@ receive_8packets_local(){
   diff fileReceived.txt ../RDTSender/fileSent8Packets.txt | tee diff_result.txt
 }
 
-cd receiver
+cd RDTReceiver
 
 i="0"
 

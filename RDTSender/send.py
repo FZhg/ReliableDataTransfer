@@ -243,7 +243,8 @@ class Sender:
         if typ == EOT:
             self.on_EOT_received()
             if self.areAllPacketsAcked() and self.EOT_sent_event.is_set():
-                self.EOT_received_event.set() # Stop the receiving thread
+                self.EOT_received_event.set()  # Stop the receiving thread
+                self.udp_socket.sendto("1", self.local_addr)  # sentinel
                 self.udp_socket.close()
 
     def close(self):
