@@ -70,6 +70,8 @@ class Sender:
         self.receiving_thread.join()
         self.sending_thread.join()
 
+        self.close()
+
     def send_packets(self):
         if self.verbose:
             print("Start Sending packets....")
@@ -241,11 +243,10 @@ class Sender:
         if typ == EOT:
             self.on_EOT_received()
             if self.areAllPacketsAcked() and self.EOT_sent_event.is_set():
-                self.close()
+                self.EOT_received_event.set() # Stop the receiving thread
+                self.udp_socket.close()
 
     def close(self):
-        self.EOT_received_event.set()  # Stop the receiving thread
-        self.udp_socket.close()
         self.seq_num_logger.close()
         self.ack_logger.close()
         self.N_logger.close()
@@ -303,9 +304,11 @@ if __name__ == '__main__':
     # Parse Args
     parser = argparse.ArgumentParser(description="the RDTSender module for the RDP protocol")
     parser.add_argument(dest="forward_recv_address", type=str, help="host address of the network emulator")
-    parser.add_argument(dest="forward_recv_port", type=int, help="UDP port number used by the RDTSender to receiver SACKs "
+    parser.add_argument(dest="forward_recv_port", type=int, help="UDP port number used by the RDTSender to receiver "
+                                                                 "SACKs"
                                                                  "from the emulator")
-    parser.add_argument(dest="sender_recv_port", type=int, help="UDP port number used by the RDTSender to receiver SACKs "
+    parser.add_argument(dest="sender_recv_port", type=int, help="UDP port number used by the RDTSender to receiver "
+                                                                "SACKs"
                                                                 "from the emulator")
     parser.add_argument(dest="max_timeout", type=int, help="timeout interval in units of millisecond")
     parser.add_argument(dest="filename", type=str, help="name of the file to be transferred")
