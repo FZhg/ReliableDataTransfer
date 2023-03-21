@@ -2,12 +2,12 @@
 
 send_8packets(){
   kill -9 $(lsof -t  -i udp:53718)
-  python3 send.py 129.97.167.46 56518 53718 400 fileSent8Packets.txt
+  python3 send.py 10.15.154.51 56518 53718 400 fileSent8Packets.txt
 }
 
 send_45packets(){
   kill -9 $(lsof -t  -i udp:53718)
-  python3 send.py 129.97.167.46 56518 53718 400 fileSent45Packets.txt
+  python3 send.py 10.15.154.51 56518 53718 400 fileSent45Packets.txt
 }
 
 
