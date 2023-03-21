@@ -1,0 +1,41 @@
+#!/bin/bash
+
+receive_8packets(){
+  kill -9 $(lsof -t  -i udp:56518)
+  go run rdt_receive_app.go -backward_recv_address=10.15.154.27 -backward_recv_port=53718 -receiver_recv_port=56518 -file=fileReceived.txt
+  diff fileReceived.txt ../RDTSender/fileSent8Packets.txt | tee diff_result.txt
+}
+
+receive_45packets(){
+  kill -9 $(lsof -t  -i udp:56518)
+  go run rdt_receive_app.go -backward_recv_address=10.15.154.27 -backward_recv_port=53718 -receiver_recv_port=56518 -file=fileReceived.txt
+  diff fileReceived.txt ../RDTSenders/fileSent45Packets.txt | tee diff_result.txt
+}
+
+receive_45packets_local(){
+  kill -9 $(lsof -t  -i udp:56518)
+  go run rdt_receive_app.go -backward_recv_address=127.0.0.1 -backward_recv_port=53718 -receiver_recv_port=56518 -file=fileReceived.txt
+  diff fileReceived.txt ../RDTSender/fileSent45Packets.txt | tee diff_result.txt
+}
+
+receive_8packets_local(){
+  kill -9 $(lsof -t  -i udp:56518)
+  go run rdt_receive_app.go -backward_recv_address=127.0.0.1 -backward_recv_port=53718 -receiver_recv_port=56518 -file=fileReceived.txt
+  diff fileReceived.txt ../RDTSender/fileSent8Packets.txt | tee diff_result.txt
+}
+
+cd receiver
+
+i="0"
+
+while [ $i -lt 10 ]
+do
+
+  receive_45packets_local
+  i=$[$i+1]
+done
+
+cat diff_result.txt
+
+#cd RDTReceiver
+#receive_45packets_local

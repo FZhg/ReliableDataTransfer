@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cd RDTReceiver
+go run rdt_receive_app.go -backward_recv_address="$1" -backward_recv_port="$2" -receiver_recv_port="$3" -file="$4"
+

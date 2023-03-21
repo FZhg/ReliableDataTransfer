@@ -1,0 +1,19 @@
+#!/bin/bash
+
+send_45packets_local(){
+  kill -9 $(lsof -t  -i udp:53718)
+  python3 send.py 127.0.0.1 56518 53718 400 fileSent45Packets.txt
+}
+
+
+
+cd sender
+
+i="0"
+
+while [ $i -lt 10 ]
+do
+  sleep 1
+  send_45packets_local
+  i=$[$i+1]
+done
