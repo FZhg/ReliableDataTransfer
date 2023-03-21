@@ -2,13 +2,13 @@
 
 receive_8packets(){
   kill -9 $(lsof -t  -i udp:56518)
-  go run rdt_receive_app.go -backward_recv_address=129.97.167.27 -backward_recv_port=53718 -receiver_recv_port=56518 -file=fileReceived.txt
+  go run rdt_receive_app.go -backward_recv_address=10.15.154.52 -backward_recv_port=53718 -receiver_recv_port=56518 -file=fileReceived.txt
   diff fileReceived.txt ../RDTSender/fileSent8Packets.txt | tee diff_result.txt
 }
 
 receive_45packets(){
   kill -9 $(lsof -t  -i udp:56518)
-  go run rdt_receive_app.go -backward_recv_address=129.97.167.46 -backward_recv_port=53718 -receiver_recv_port=56518 -file=fileReceived.txt
+  go run rdt_receive_app.go -backward_recv_address=10.15.154.52 -backward_recv_port=53718 -receiver_recv_port=56518 -file=fileReceived.txt
   diff fileReceived.txt ../RDTSender/fileSent45Packets.txt | tee diff_result.txt
 }
 

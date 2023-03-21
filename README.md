@@ -5,7 +5,7 @@
 # Verification
 
 ## Direct Link
-Sender Machine: ubuntu2004-008.student.cs.uwaterloo.ca  (129.97.167.27)
+Sender Machine: ubuntu2004-004.student.cs.uwaterloo.ca  (10.15.154.52)
 
 Receiver Machine: ubuntu2004-014.student.cs.uwaterloo.ca (129.97.167.46)
 
