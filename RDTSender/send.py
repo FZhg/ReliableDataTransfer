@@ -70,7 +70,6 @@ class Sender:
         self.receiving_thread.join()
         self.sending_thread.join()
 
-        self.close()
 
     def send_packets(self):
         if self.verbose:
