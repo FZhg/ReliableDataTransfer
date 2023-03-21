@@ -47,7 +47,6 @@ func (receiver *RDTReceiver) Start() {
 
 func (receiver *RDTReceiver) stop() {
 	receiver.fileReceived.Close()
-	receiver.udpSocket.Close()
 	receiver.arrivalLogFile.Close()
 }
 
