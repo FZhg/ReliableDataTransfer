@@ -5,9 +5,9 @@
 # Verification
 
 ## Direct Link
-Sender Machine: ubuntu2004-008.student.cs.uwaterloo.ca  (129.97.167.46)
+Sender Machine: ubuntu2004-008.student.cs.uwaterloo.ca  (129.97.167.27)
 
-Receiver Machine: ubuntu2004-014.student.cs.uwaterloo.ca (10.15.154.27)
+Receiver Machine: ubuntu2004-014.student.cs.uwaterloo.ca (129.97.167.46)
 
 | File Length              | The Number of Test Iterations | Sender Max-Timeout | Passed   |
 |--------------------------|-------------------------------|--------------------|----------|
