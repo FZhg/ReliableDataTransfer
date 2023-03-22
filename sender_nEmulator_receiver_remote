@@ -8,6 +8,6 @@ start_emulator(){
 
 }
 
-cd nEmualtor
+cd nEmulator
 start_emulator
 
