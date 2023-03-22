@@ -1,0 +1,21 @@
+#!/bin/bash
+
+
+send_45packets(){
+  kill -9 $(lsof -t  -i udp:57512)
+  python3 send.py 127.0.0.1 33309 57512 500 fileSent45Packets.txt
+}
+
+
+
+cd RDTSender
+send_45packets
+
+#i="0"
+#
+#while [ $i -lt 10 ]
+#do
+#  sleep 1
+#  send_45packets
+#  i=$[$i+1]
+#done

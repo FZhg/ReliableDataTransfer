@@ -93,7 +93,7 @@ func (receiver *RDTReceiver) processReceivedBytes(byteLen int, buff []byte) {
 		if receiver.isPacketInPreviousWindow(packet.seqNum) {
 
 			receiver.sendAck(packet.seqNum)
-			log.Printf("Old Ack packetSeqNum: %d, receiveBase: %d", packet.seqNum, receiver.receiveBase)
+			log.Printf("Send Old Ack packetSeqNum: %d, receiveBase: %d", packet.seqNum, receiver.receiveBase)
 		} else if packet.seqNum == receiver.receiveBase {
 
 			receiver.sendAck(packet.seqNum)
@@ -108,7 +108,7 @@ func (receiver *RDTReceiver) processReceivedBytes(byteLen int, buff []byte) {
 			// packet is  in the window
 			receiver.sendAck(packet.seqNum)
 
-			log.Printf("Gap Ack packetSeqNum: %d, receiveBase: %d", packet.seqNum, receiver.receiveBase)
+			log.Printf("Gap  packetSeqNum: %d, receiveBase: %d", packet.seqNum, receiver.receiveBase)
 
 			// buffer it if not received
 			_, presence := receiver.payloadBuffer[packet.seqNum]
@@ -119,7 +119,7 @@ func (receiver *RDTReceiver) processReceivedBytes(byteLen int, buff []byte) {
 		}
 		receiver.mutex.Unlock()
 
-	} else if packet.flag == EOT || packet.length == 0 {
+	} else if packet.flag == EOT && packet.length == 0 {
 		// log arrival
 		receiver.arrivalLogger.Println("EOT")
 

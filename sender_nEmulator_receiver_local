@@ -1,0 +1,13 @@
+#!/bin/bash
+
+
+start_emulator(){
+  kill -9 $(lsof -t  -i udp:33309)
+  kill -9 $(lsof -t  -i udp:10226)
+  python3 network_emulator.py  33309 127.0.0.1 14106 10226 127.0.0.1 57512 100 0.1 1
+
+}
+
+cd nEmulator
+start_emulator
+

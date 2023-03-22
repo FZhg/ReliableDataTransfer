@@ -10,7 +10,17 @@ receive_45packets(){
 
 
 cd RDTReceiver
-receive_45packets
+
+i="0"
+
+while [ $i -lt 10 ]
+do
+
+  receive_45packets
+  i=$[$i+1]
+done
+
+cat diff_result.txt
 
 
 

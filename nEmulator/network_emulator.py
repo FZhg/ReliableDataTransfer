@@ -11,10 +11,10 @@ from packet import Packet
 max_delay = None  # max delay a packet can be delayed by in milliseconds
 
 forward_recv_port = None  # the port to listen on to get messages from the RDTSender
-backward_recv_port = None  # emulator's receiving UDP port from RDTReceiver
+backward_recv_port = None  # emulator's receiving UDP port from RDTReceiverwithQueue
 
-receiver_addr = None  # RDTReceiver's network address
-receiver_recv_port = None  # RDTReceiver's receiving UDP port
+receiver_addr = None  # RDTReceiverwithQueue's network address
+receiver_recv_port = None  # RDTReceiverwithQueue's receiving UDP port
 
 sender_addr = None  # RDTSender's network address
 sender_recv_port = None  # the RDTSender's receiving UDP port number
@@ -65,7 +65,7 @@ def processPacket(packet, fromSender):
                 data_buff.put(packet)
             else:
                 if typ == 1:
-                    raise RuntimeError("Received data from the RDTReceiver")
+                    raise RuntimeError("Received data from the RDTReceiverwithQueue")
                 if verbose: print(
                     "Adding packet to ack buffer: Type={}, seqnum={}, length={}, data={}".format(typ, seqnum, length,
                                                                                                  data))
@@ -103,7 +103,7 @@ def backwardFlow():
     sock.bind(('', backward_recv_port))
     while True:
         packet = sock.recv(1024)
-        if verbose: print("Received a packet from RDTReceiver")
+        if verbose: print("Received a packet from RDTReceiverwithQueue")
         new_thread = threading.Thread(target=processPacket, args=(packet, False,))
         new_thread.start()
 
@@ -127,7 +127,7 @@ if __name__ == '__main__':
     parser.add_argument("<Receiver's network address>")
     parser.add_argument("<Reciever’s receiving UDP port number>")
     parser.add_argument("<Backward receiving port>",
-                        help="emulator's receiving UDP port number in the backward (RDTReceiver) direction")
+                        help="emulator's receiving UDP port number in the backward (RDTReceiverwithQueue) direction")
     parser.add_argument("<Sender's network address>")
     parser.add_argument("<Sender's receiving UDP port number>")
     parser.add_argument("<Maximum Delay>", help="maximum delay of the link in units of millisecond")

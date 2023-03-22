@@ -65,7 +65,7 @@ class Sender:
 
         while not self.EOT_received_event.is_set():
             try:
-                event = self.event_queue.get(block=True, timeout=SENDING_WAITING_TIME)
+                event = self.event_queue.get_nowait()
                 if event[0] == EVENT_TIMEOUT:
                     packet_seq_num = event[1]
                     self.on_time_out(packet_seq_num)
@@ -108,9 +108,10 @@ class Sender:
             self.packets_sent[packet.seqnum] = packet  # for retransmission
 
     def delayed_retransmit_packet_timed_out(self, packet_seq_num):
-        if self.is_seq_num_in_window(packet_seq_num):
+        if self.is_seq_num_in_window(packet_seq_num) and self.is_packet_not_acked(packet_seq_num):
             packet = self.packets_sent[packet_seq_num]
             self.send_data_packet_start_timer(packet)
+            self.packets_timed_out.remove(packet_seq_num)
             if self.verbose:
                 print(f"Delayed Retransmission Packet: \n {packet}")
                 print(f"Timestamp: {self.timestamp}")
@@ -206,7 +207,6 @@ class Sender:
         self.on_EOT_sent()
 
     def on_EOT_sent(self):
-
         if self.verbose:
             print(f"Sent EOT at timestamp {self.timestamp}.")
         self.seq_num_logger.log(self.timestamp, "EOT")
@@ -274,10 +274,15 @@ class Sender:
         return self.is_seq_num_in_max_window(packet_seq_num) and packet_seq_num not in self.acked_packets
 
     def slide_window(self):
-        self.acked_packets.sort()
-        while len(self.acked_packets) != 0 and self.acked_packets[0] == get_next_seq_num(self.send_base):
-            self.send_base = self.acked_packets[0]
-            self.acked_packets.remove(self.acked_packets[0])
+        if self.verbose:
+            print(f"Current acked Packets: {self.acked_packets}")
+            next_send_base = get_next_seq_num(self.send_base)
+        while len(self.acked_packets) != 0 and next_send_base in self.acked_packets:
+            self.send_base = next_send_base
+            self.acked_packets.remove(next_send_base)
+            if self.verbose:
+                print(f"Window slided: new send-base :{self.send_base}")
+            next_send_base = get_next_seq_num(self.send_base)
         self.send_base = get_next_seq_num(self.send_base)  # the next unacked packet
 
     def is_seq_num_in_max_window(self, packet_seq_num):
