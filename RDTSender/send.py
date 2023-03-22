@@ -169,7 +169,7 @@ class Sender:
     def on_time_out(self, packet_seq_num):
         # check if ack event arrives before the timeout event
         # else the packet is already acked
-        if self.is_seq_num_in_max_window(packet_seq_num):
+        if self.is_packet_not_acked(packet_seq_num):
             # stop sending
             self.window_size = 1
             self.N_logger.log(self.timestamp, self.window_size)
@@ -254,7 +254,7 @@ class Sender:
         # block sending
         if self.verbose:
             print(f"Received ACK Packet at timestamp {self.timestamp}; Packet Seq Num :{packet_seq_num}")
-        if self.is_packet_new_ack(packet_seq_num):
+        if self.is_packet_not_acked(packet_seq_num):
             self.on_new_ack_received(packet_seq_num)
 
             # Stop the timer
@@ -268,7 +268,7 @@ class Sender:
         else:
             self.on_duplicate_ack_received(packet_seq_num)
 
-    def is_packet_new_ack(self, packet_seq_num):
+    def is_packet_not_acked(self, packet_seq_num):
         return self.is_seq_num_in_max_window(packet_seq_num) and packet_seq_num not in self.acked_packets
 
     def slide_window(self):
