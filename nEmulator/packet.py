@@ -1,8 +1,6 @@
 # Packet definition for CS 456/656 Winter 2021 Assignment 2
 import struct
 
-from constants import RING_SIZE
-
 
 class Packet:
     """
@@ -58,14 +56,6 @@ class Packet:
         ret += "Length=" + str(self.length) + "\n"
         ret += "Data=" + self.data
         return ret
-
-
-def get_next_seq_num(seq_num):
-    if seq_num < RING_SIZE - 1:
-        return seq_num + 1
-    elif seq_num == 31:
-        return 0
-    raise Exception(f"SeqNum: {seq_num} exceeded Ring Size: {RING_SIZE}")
 
 
 if __name__ == '__main__':
