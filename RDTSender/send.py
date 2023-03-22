@@ -4,7 +4,7 @@ import socket
 import time
 
 from constants import INITIAL_WINDOW_SIZE, SACK, EOT, PACKET_BYTE_LEN, MAX_WINDOW_SIZE, RING_SIZE, DATA, \
-    PAY_LOAD_BYTE_LEN
+    PAY_LOAD_BYTE_LEN, SENDING_WAITING_TIME
 from logger import LoggerTimeStamped
 from packet import Packet, get_next_seq_num
 
@@ -78,7 +78,7 @@ class Sender:
             print("Start Sending packets....")
         # When sending the EOT, the sending thread is stopped
         while not self.EOT_sent_event.is_set():
-            time.sleep(self.max_timeout / 2)
+            time.sleep(SENDING_WAITING_TIME)
             self.send_continue_event.wait()
             self.delayed_retransmit_all_timed_out_packets_in_window()
             self.send_new_packet()
