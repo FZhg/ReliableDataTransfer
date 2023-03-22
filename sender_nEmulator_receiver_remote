@@ -1,0 +1,12 @@
+#!/bin/bash
+
+
+send_45packets(){
+  kill -9 $(lsof -t  -i udp:57512)
+  python3 network_emulator.py  33309 10.15.154.51 14106 10226 10.15.154.52 57512 100 0.1 1
+
+}
+
+cd nEmualtor
+send_45packets
+

@@ -1,0 +1,28 @@
+#!/bin/bash
+
+
+
+receive_45packets(){
+  kill -9 $(lsof -t  -i udp:14106)
+  go run rdt_receive_app.go -backward_recv_address=129.97.167.27 -backward_recv_port=10226 -receiver_recv_port=14106 -file=fileReceived.txt
+  diff fileReceived.txt ../RDTSender/fileSent45Packets.txt | tee diff_result.txt
+}
+
+
+
+cd RDTReceiver
+receive_45packets
+
+#i="0"
+#
+#while [ $i -lt 10 ]
+#do
+#
+#  receive_45packets
+#  i=$[$i+1]
+#done
+#
+#cat diff_result.txt
+
+#cd RDTReceiver
+#receive_45packets_local
