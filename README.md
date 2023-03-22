@@ -17,7 +17,7 @@ Receiver Machine: ubuntu2004-002.student.cs.uwaterloo.ca (10.15.154.51)
 
 ## With nEmualtor
 
-| File Length            | Sender Max-Timeout | nEmulator Max-Delay | nEmulator Drop Probability |
-|------------------------|--------------------|---------------------|----------------------------|
-| 8 Packets (2876 chars) |                    | N.A.                ||
-| Content Cell           |                    |||
+| File Length              | Sender Max-Timeout | nEmulator Max-Delay | nEmulator Drop Probability |
+|--------------------------|--------------------|---------------------|----------------------------|
+| 45 Packets (22386 chars) |                    | N.A.                ||
+|                          |                    |||

@@ -1,6 +1,7 @@
 import argparse
 import threading
 import socket
+import time
 
 from constants import INITIAL_WINDOW_SIZE, SACK, EOT, PACKET_BYTE_LEN, MAX_WINDOW_SIZE, RING_SIZE, DATA, \
     PAY_LOAD_BYTE_LEN
@@ -70,12 +71,14 @@ class Sender:
         self.receiving_thread.join()
         self.sending_thread.join()
 
+        self.close()
 
     def send_packets(self):
         if self.verbose:
             print("Start Sending packets....")
         # When sending the EOT, the sending thread is stopped
         while not self.EOT_sent_event.is_set():
+            time.sleep(self.max_timeout / 2)
             self.send_continue_event.wait()
             self.delayed_retransmit_all_timed_out_packets_in_window()
             self.send_new_packet()
@@ -90,6 +93,7 @@ class Sender:
         buffer = packet.encode()
         self.udp_socket.sendto(buffer, self.remote_addr)
         timer = threading.Timer(self.max_timeout, self.on_time_out, args=(packet.seqnum,))
+        timer.daemon = True
         timer.start()
         self.timers[packet.seqnum] = timer
 
@@ -187,7 +191,7 @@ class Sender:
                     print(f"Timestamp: {self.timestamp}")
             else:
                 self.packets_timed_out.append(packet_seq_num)
-                print(f"Wait for Delayed Retransmission Packet Seqnum: \n {packet_seq_num}")
+                print(f"Wait for Delayed Retransmission Packet Seqnum:  {packet_seq_num}")
                 print(f"Timestamp: {self.timestamp}")
             self.timestamp += 1
 
@@ -263,6 +267,7 @@ class Sender:
 
                     # Stop the timer
                     timer = self.timers[packet_seq_num]
+                    timer.daemon = True
                     timer.cancel()
 
                     if self.send_base == packet_seq_num:
