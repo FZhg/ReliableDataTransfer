@@ -267,7 +267,6 @@ class Sender:
 
                     # Stop the timer
                     timer = self.timers[packet_seq_num]
-                    timer.daemon = True
                     timer.cancel()
 
                     if self.send_base == packet_seq_num:
