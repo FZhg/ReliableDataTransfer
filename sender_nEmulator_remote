@@ -3,7 +3,7 @@
 
 send_45packets(){
   kill -9 $(lsof -t  -i udp:57512)
-  python3 send.py 129.97.167.27 33309 57512 500 fileSent45Packets.txt
+  python3 send.py 129.97.167.27 33309 57512 450 fileSent45Packets.txt
 }
 
 
