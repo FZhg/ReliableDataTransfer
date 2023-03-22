@@ -65,7 +65,7 @@ class Sender:
 
         while not self.EOT_received_event.is_set():
             try:
-                event = self.event_queue.get_nowait()
+                event = self.event_queue.get(block=True, timeout=SENDING_WAITING_TIME)
                 if event[0] == EVENT_TIMEOUT:
                     packet_seq_num = event[1]
                     self.on_time_out(packet_seq_num)
@@ -252,9 +252,9 @@ class Sender:
 
     def process_ack_packet(self, packet_seq_num):
         # block sending
-        if self.verbose:
-            print(f"Received ACK Packet at timestamp {self.timestamp}; Packet Seq Num :{packet_seq_num}")
         if self.is_packet_not_acked(packet_seq_num):
+            if self.verbose:
+                print(f"Received New ACK Packet at timestamp {self.timestamp}; Packet Seq Num :{packet_seq_num}")
             self.on_new_ack_received(packet_seq_num)
 
             # Stop the timer
@@ -266,6 +266,8 @@ class Sender:
             else:
                 self.acked_packets.append(packet_seq_num)
         else:
+            if self.verbose:
+                print(f"Received Duplicate ACK Packet at timestamp {self.timestamp}; Packet Seq Num :{packet_seq_num}")
             self.on_duplicate_ack_received(packet_seq_num)
 
     def is_packet_not_acked(self, packet_seq_num):
