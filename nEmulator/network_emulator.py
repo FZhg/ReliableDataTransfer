@@ -5,7 +5,7 @@ import threading
 import argparse
 import socket
 
-from nEmulator.packet import Packet
+from packet import Packet
 
 # initialize to dumby values for sanity checking purposes
 max_delay = None  # max delay a packet can be delayed by in milliseconds
