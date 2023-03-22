@@ -13,12 +13,4 @@ send_45packets(){
 
 
 cd RDTSender
-
-i="0"
-
-while [ $i -lt 10 ]
-do
-  sleep 1
-  send_45packets
-  i=$[$i+1]
-done
+send_45packets
