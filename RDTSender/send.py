@@ -78,8 +78,8 @@ class Sender:
             print("Start Sending packets....")
         # When sending the EOT, the sending thread is stopped
         while not self.EOT_sent_event.is_set():
-            time.sleep(SENDING_WAITING_TIME)
             self.send_continue_event.wait()
+            time.sleep(SENDING_WAITING_TIME)
             self.delayed_retransmit_all_timed_out_packets_in_window()
             self.send_new_packet()
         if self.verbose:
