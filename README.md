@@ -1,4 +1,10 @@
+# Reliable Data Transfer
+This is a reliable data transfer protocol implemented using UDP. The protocol is based on the Go-Back-N protocol. The sender are implemented in python with a thread-safe queue and the receiver is implemented in Golang channels.
+
+
 # How to run my code
+First, place the the file to send in the `RDTSender` Directory.
+
 In the root directory, run the following cmd to start the sender and the receiver
 
 ```commandline
@@ -10,6 +16,7 @@ In the root directory, run the following cmd to start the sender and the receive
 ```
 
 The log files will be generated in `RDTReceiver` and `RDTSender` directories.
+You can find the file received in the `RDTReceiver` directory.
 
 
 # Verification
